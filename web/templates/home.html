@@ -1,4 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-   <h1>{{ body }}</h1>
+
+    {% for coin, value in coins.items %}
+    <tr>
+        <td>
+            {{ coin }}
+        </td>
+        <td>
+            {{ value.symbol }}
+        </td>
+        <td>
+            {{ value.price }}
+        </td>
+        <td>
+            {% widthratio value.price 1 14000 %}
+        </td>
+        <td>
+            <a href="{{ value.url }}">Details </a>
+        </td>
+    </tr>
+ {% endfor %}
 {% endblock %}
