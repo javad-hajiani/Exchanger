@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 {% if user.is_authenticated %}
 
 
@@ -40,7 +41,7 @@
 
                     <li><a id="settingmenu" href="#features">accont Setting </a></li>
 
-                    <li><a href="/home/">logout</a></li>
+                    <li><a href="/accounts/logout/">logout</a></li>
                 </ul>
                 <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
             </div>
@@ -402,115 +403,46 @@
 
             <div class="row" id="pricesec">
                 <h2>Price table</h2>
-                <table class="rwd-table">
+                 <center>
+		<table class="rwd-table" style="alignment: center">
+                  <thead>
+    <tr>
+      <th scope="col">Rank</th>
+      <th scope="col">Coin</th>
+      <th scope="col">Price(US)</th>
+      <th scope="col">Price(RL)</th>
+      <th scope="col">More Info</th>
+    </tr>
+  </thead>
+            <tbody>
 
-                    <tr>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">Howard The Duck</td>
-                        <td data-th="Genre">"Comedy"</td>
-                        <td data-th="Year">1986</td>
-                        <td data-th="Gross">$16,295,774</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
+   						 {% for coin, value in coins.items %}
+    <tr>
+        <td>
+            {{ coin }}
+        </td>
+        <td>
+            {{ value.symbol }}
+        </td>
+        <td>
+            {{ value.price|intcomma }}(USD)
+        </td>
+        <td>
+          {% widthratio value.price 1 dollar as rialprice %}
+            {% widthratio rialprice 1 10 as rialprice %}
+            {{ rialprice|intcomma }}(RL)
+        </td>
+        <td>
+            <a href="{{ value.url }}" target="_blank">Details </a>
+        </td>
+    </tr>
+ {% endfor %}
 
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000</td>
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                        </td>                          </tr>
 
-                    <tr>
-                        <td data-th="Movie Title">American Graffiti</td>
-                        <td data-th="Genre">Comedy, Drama</td>
-                        <td data-th="Year">1973</td>
-                        <td data-th="Gross">$115,000,000
-                        <td data-th="Movie Title">Star Wars</td>
-                        <td data-th="Genre">Adventure, Sci-fi</td>
-                        <td data-th="Year">1977</td>
-                        <td data-th="Gross">$460,935,665</td>
-                        </td>                      </tr>
-                </table>
 
-                <p>&larr; Drag window (in editor or full page view) to see the effect. &rarr;</p>
-
+</tbody>
+			</table>
+</center>
 
             </div>
 
