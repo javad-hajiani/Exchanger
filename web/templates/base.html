@@ -30,8 +30,13 @@
 		                <li><a href="#cities">Our cities</a></li>
                         <li><a href="/aboutus/">About us</a></li>
 						  <li><a href="/contactus/">Contantus</a></li>
-                        <li><a href="/accounts/accounts/signup/">Sign up</a></li>
-			            <li><a href="/accounts/login/">Login</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="/accounts/dashboard/">Dashboard</a></li>
+			                <li><a href="/accounts/profile/">Hi {{ user.username }}!</a></li>
+                        {% else %}
+                            <li><a href="/accounts/signup/">Sign up</a></li>
+			                <li><a href="/accounts/login/">Login</a></li>
+                        {% endif %}
 
 
                     </ul>

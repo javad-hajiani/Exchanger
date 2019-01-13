@@ -48,7 +48,7 @@ def contactus_page(request):
 @login_required
 def dashboard_page(request):
     response = {"title": "Dashboard"}
-    return render(request, "dashboard.html", context=response)
+    return render(request, "panel/dashboard.html", context=response)
 
 
 @csrf_exempt
