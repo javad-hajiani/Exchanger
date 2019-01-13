@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }}</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+
+      <link rel="stylesheet" href="{% static "css/signup.css"%}">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:100,300,400,300italic'>
+
+
+</head>
+
+<body>
+
+  <div class="container">
+	<div class="box" id="sign-up">
+		<a style=" font-family: 'Lato', 'Arial', sans-serif;" class="back" href="/home/"><span class="back-arrow">Back</span></a>
+		<div class="brand">
+			<div class="logo">
+			<img src="{% static "img/sign-up-icon-3.png"%}" height="62">
+
+			</div>
+
+			<h2 style=" font-family: 'Lato', 'Arial', sans-serif;" class="title">Sign up </h2>
+		</div>
+		<div class="form">
+			<form>
+				<div class="row">
+					<input type="text" name="firstname" placeholder="First name">
+					<input type="text" name="lastname" placeholder="Last name">
+				</div>
+				<input style=" font-family: 'Lato', 'Arial', sans-serif" type="text" name="phonenumber" placeholder="Phonenumber">
+				<input type="email" name="email" placeholder="Email">
+				<input type="email" name="repeid email" placeholder="repead Email">
+				<input type="password" name="password" placeholder="Password">
+				<input type="password" name="repeadpassword" placeholder="repead Password">
+				<div class="checkbox">
+					<input type="checkbox" name="terms" id="terms">
+					<label for="terms" class="checkbox-label"></label>
+					<label style=" font-family: 'Lato', 'Arial', sans-serif;" for="terms" class="description">I agree with <a href="/law/">Terms & conditions</a></label>
+						<label style=" font-family: 'Lato', 'Arial', sans-serif;" for="terms" class="description">if you have accont<a href="/accounts/accounts/login/">  click here</a></label>
+				</div>
+				<button style=" font-family: 'Lato', 'Arial', sans-serif;" type="submit" name="submit">Sign up  </button>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+</body>
+
+</html>

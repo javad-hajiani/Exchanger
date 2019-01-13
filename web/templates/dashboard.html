@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Money | {{ title }}</title>
+</head>
+<body>
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <p><a href="/accounts/logout/">logout</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="/accounts/login/">login</a>
+{% endif %}
+</body>
+</html>
