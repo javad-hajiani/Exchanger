@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block content %}
-
     {% for coin, value in coins.items %}
     <tr>
         <td>
@@ -14,8 +13,9 @@
             {{ value.price|intcomma }}(USD)
         </td>
         <td>
-          {% widthratio value.price 1 14000 as rialprice %}
-            {{ rialprice|intcomma }}(RL)
+          {% widthratio value.price 1 dollar as rialprice %}
+            {% widthratio rialprice 1 10 as rialprice %}
+            {{ rialprice|intcomma }}˚(RL)
         </td>
         <td>
             <a href="{{ value.url }}" target="_blank">Details </a>
