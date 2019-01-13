@@ -8,4 +8,6 @@ from web.views import *
 urlpatterns = [
     path('', redirect_view),
     path('home/', home),
+    path('aboutus/',aboutus),
+    path('contactus/',contactus)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

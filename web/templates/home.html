@@ -15,7 +15,7 @@
         <td>
           {% widthratio value.price 1 dollar as rialprice %}
             {% widthratio rialprice 1 10 as rialprice %}
-            {{ rialprice|intcomma }}˚(RL)
+            {{ rialprice|intcomma }}(RL)
         </td>
         <td>
             <a href="{{ value.url }}" target="_blank">Details </a>
