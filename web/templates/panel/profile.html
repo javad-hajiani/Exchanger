@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Your Profile</title>
 </head>
 <body>
-$END$
+{{ user.username }}
+{{ user.first_name }}
+{{ user.last_name }}
+{{ user.email }}
+{{ user.password }}
+{{ user.userprofile.phone_number }}
+<img src="{{ user.userprofile.picture.url }}">
 </body>
 </html>
