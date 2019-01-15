@@ -37,9 +37,5 @@ class UserProfileForm(forms.ModelForm):
 class cardForm(forms.ModelForm):
     class Meta:
         model = Card
+        widgets = {'date_exp': forms.DateInput(attrs={'type': 'date'})}
         fields = ('card_number','date_exp','cvv','card_front','card_back')
-
-    # def __init__(self, *args, **kwargs):
-    #     user = kwargs.pop('user', '')
-    #     super(cardForm, self).__init__(*args, **kwargs)
-    #     self.base_fields['card_holder'] = forms.ModelChoiceField(queryset=User.objects.filter(card_holder=user))

@@ -1,598 +1,603 @@
 {% load static %}
 {% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Digital Money | {{ title }}</title>
 
 
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:100,300,400,300italic'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css'>
+
+    <link rel="stylesheet" href="{% static "css/panel.css" %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel=”stylesheet” href=”//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css”>
+    <link rel=”stylesheet” href=”/resources/demos/style.css”>
 
 
-    <!DOCTYPE html>
-    <html lang="en">
+    {% if messages %}
+        {% for message in messages %}
+            <script>alert("{{ message }}")</script>
+        {% endfor %}
+    {% endif %}
+</head>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Digital Money | {{ title }}</title>
+<body>
+
+<body>
+<header>
+    <div style="padding: 15px; color: white; ">Hi {{ user.username }}!</div>
+    <nav>
+        <div class="row">
+            <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo">
+            <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo-black">
+            <ul class="main-nav js--main-nav">
+                <li><a id="historymenbtn" href="#features">Trades History</a></li>
+
+                <li><a id="salebuy" href="#features">Trade Coins</a></li>
+                <li><a id="adnewscart" href="#features">Add cart</a></li>
+                <li><a id="vvv" href="#features">Verification of documents</a></li>
+
+                <li><a id="settingmenu" href="#features">Account Setting </a></li>
+
+                <li><a href="/accounts/logout/">Logout</a></li>
+            </ul>
+            <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
+        </div>
+    </nav>
+    <div class="hero-text-box">
+        <h1>Wellcome <br>to your panel</h1>
+        <a class="btn btn-ghost js--scroll-to-start" id="pricebtn1" href="#">All Price</a>
+    </div>
+
+</header>
+
+<section class="section-features js--section-features" id="features">
 
 
-        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:100,300,400,300italic'>
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css'>
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.css'>
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css'>
+    <div id="verfery" class="row">
+        <div class="row">
+            <h2>Verification of documents</h2>
+        </div>
+        <div class="row">
+            <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="passcode">Passport code</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="passcode" id="Passcode" placeholder=" " required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="countryname">Country name</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="email">Date of birthday</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="date" name="date" id="date">
+                        <input id="date">
+                    </div>
+                </div>
 
-        <link rel="stylesheet" href="{% static "css/panel.css" %}">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label>Address</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <textarea name="Address" placeholder=" "></textarea>
+                    </div>
+                    <label for="fileField">Upload Passport photo</label>
+                    <input type="file" name="fileField" id="fileField">
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label>&nbsp;</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input id="button1" type="submit" value="Send it!">
+                    </div>
+                </div>
 
-    </head>
+                <div class="row">
+                    <div>
+                        <label>after Confirmation your ducument you can use Site </label>
+                    </div>
 
-    <body>
+                </div>
 
-    <body>
-    <header>
-        <div style="padding: 15px; color: white; ">Hi {{ user.username }}!</div>
-        <nav>
-            <div class="row">
-                <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo">
-                <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo-black">
-                <ul class="main-nav js--main-nav">
-                    <li><a id="historymenbtn" href="#features">Trades History</a></li>
 
-                    <li><a id="salebuy" href="#features">Trade Coins</a></li>
-                    <li><a id="adnewscart" href="#features">Add cart</a></li>
-                    <li><a id="vvv" href="#features">Verification of documents</a></li>
+        </div>
+    </div>
+    </form>
 
-                    <li><a id="settingmenu" href="#features">Account Setting </a></li>
 
-                    <li><a href="/accounts/logout/">Logout</a></li>
-                </ul>
-                <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
-            </div>
-        </nav>
-        <div class="hero-text-box">
-            <h1>Wellcome <br>to your panel</h1>
-            <a class="btn btn-ghost js--scroll-to-start" id="pricebtn1" href="#">All Price</a>
+    <div id="Cartads" class="row">
+        <div class="row">
+            <h2>Add cart</h2>
+        </div>
+        <div class="row">
+            <form action="/addcard/" method="post" enctype="multipart/form-data" class="contact-form">
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="name">Cart number</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        {{ card_form.card_number }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="dateexp">Date of EXP</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        {{ card_form.date_exp }}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="dateexp">CVV</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        {{ card_form.cvv }}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="fileField2">Photo of your cart:</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        {{ card_form.card_front }}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="fileField3">Photo of Back of your cart</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        {{ card_form.card_back }}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label>&nbsp;</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input id="button1" type="submit" value="Send it!">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div>
+                        <label>after Confirmation your Document you can use this cart </label>
+                    </div>
+
+                </div>
+
+
         </div>
 
-    </header>
-
-    <section class="section-features js--section-features" id="features">
-
-
-        <div id="verfery" class="row">
-            <div class="row">
-                <h2>Verification of documents</h2>
-            </div>
-            <div class="row">
-                <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="passcode">Passport code</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="passcode" id="Passcode" placeholder=" " required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="countryname">Country name</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="countryname" id="countryname" placeholder=" " required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="email">Date of birthday</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="date" name="date" id="date">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label>Address</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <textarea name="Address" placeholder=" "></textarea>
-                        </div>
-                        <label for="fileField">Upload Passport photo</label>
-                        <input type="file" name="fileField" id="fileField">
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label>&nbsp;</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input id="button1" type="submit" value="Send it!">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div>
-                            <label>after Confirmation your ducument you can use Site </label>
-                        </div>
-
-                    </div>
-
-
-            </div>
-        </div>
         </form>
 
 
-        <div id="Cartads" class="row">
-            <div class="row">
-                <h2>Add cart</h2>
-            </div>
-            <div class="row">
-                <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
-                    <div class="row">
+    </div>
+    <div id="boysales" class="row">
+        <div class="row">
+            <h2>Buy and sale</h2>
+        </div>
+        <div class="row">
+            <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="find-us">choose your currency </label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <select name="find-us" id="find-us">
+                            <option value="friends" selected>Dollar</option>
+                            <option value="search">Rial</option>
+                            <option value="ad">Bittcoin</option>
+                            <option value="other">mahdicoin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="name">How much</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="text" id="number" placeholder=" " required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="find-us">What you want </label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <select name="find-us" id="find-us">
+                            <option value="friends" selected>Dollar</option>
+                            <option value="search">Rial</option>
+                            <option value="ad">Bittcoin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="dateexp">You shoud pay</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="name" id="nextstep2" placeholder=" " required>
+
+                    </div>
+                </div>
+                </br>
+                </br>
+
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label>&nbsp;</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input id="button123" type="submit" value="next step!">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label id="lable22" for="dateexp">Check number</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="name" id="nextstep123" placeholder=" " required>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label id="lable222" for="dateexp">Blackchin number*</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="name" id="nextstep1234" placeholder=" " required>
+
+                    </div>
+                    <div class="row" id="asd">
                         <div class="col span-1-of-3">
-                            <label for="name">Cart number</label>
+                            <label id="asd" for="find-us">Choose your cart</label>
                         </div>
                         <div class="col span-2-of-3">
-                            {{ card_form.card_number }}
+                            <select name="find-us">
+                                <option value="friends" selected>0000 0000 0000 0000</option>
+
+                            </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="dateexp">Date of EXP</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            {{ card_form.date_exp }}
+                    <div class="col span-2-of-3">
 
-                        </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="dateexp">CVV</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            {{ card_form.cvv }}
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="fileField2">Photo of your cart:</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            {{ card_form.card_front }}
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="fileField3">Photo of Back of your cart</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            {{ card_form.card_back }}
-
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col span-1-of-3">
                             <label>&nbsp;</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <input id="button1" type="submit" value="Send it!">
+                            <input style="margin-left:220px " id="button1234" type="submit" value="order">
                         </div>
                     </div>
-
                     <div class="row">
                         <div>
-                            <label>after Confirmation your Document you can use this cart </label>
+                            <label>you shoud send money to site cart or valet and send your check number to us and
+                                we
+                                send your money to your block chin or Cart</label>
+                            </br>
+                            </br>
+
+                            <label>* if you dont want electronic currency you shoud write your blockchain address in
+                                block chin address if you want monay you can write your cart number if you dont
+                                write it
+                                we send money to your confirmed cart </label>
+                            </br>
+
+                            </br>
+                            <label>Site Cart number:0000-0000-0000-0000
+                                </br>
+                                site wallet number:16584651689451468416895416896196846984
+                            </label>
+
+
                         </div>
 
                     </div>
-
-
-            </div>
 
             </form>
-
-
-        </div>
-        <div id="boysales" class="row">
-            <div class="row">
-                <h2>Buy and sale</h2>
-            </div>
-            <div class="row">
-                <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="find-us">choose your currency </label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <select name="find-us" id="find-us">
-                                <option value="friends" selected>Dollar</option>
-                                <option value="search">Rial</option>
-                                <option value="ad">Bittcoin</option>
-                                <option value="other">mahdicoin</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="name">How much</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="text" id="number" placeholder=" " required>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="find-us">What you want </label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <select name="find-us" id="find-us">
-                                <option value="friends" selected>Dollar</option>
-                                <option value="search">Rial</option>
-                                <option value="ad">Bittcoin</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="dateexp">You shoud pay</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="name" id="nextstep2" placeholder=" " required>
-
-                        </div>
-                    </div>
-                    </br>
-                    </br>
-
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label>&nbsp;</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input id="button123" type="submit" value="next step!">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label id="lable22" for="dateexp">Check number</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="name" id="nextstep123" placeholder=" " required>
-
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label id="lable222" for="dateexp">Blackchin number*</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="name" id="nextstep1234" placeholder=" " required>
-
-                        </div>
-                        <div class="row" id="asd">
-                            <div class="col span-1-of-3">
-                                <label id="asd" for="find-us">Choose your cart</label>
-                            </div>
-                            <div class="col span-2-of-3">
-                                <select name="find-us">
-                                    <option value="friends" selected>0000 0000 0000 0000</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col span-2-of-3">
-
-                        </div>
-                        <div class="row">
-                            <div class="col span-1-of-3">
-                                <label>&nbsp;</label>
-                            </div>
-                            <div class="col span-2-of-3">
-                                <input style="margin-left:220px " id="button1234" type="submit" value="order">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div>
-                                <label>you shoud send money to site cart or valet and send your check number to us and
-                                    we
-                                    send your money to your block chin or Cart</label>
-                                </br>
-                                </br>
-
-                                <label>* if you dont want electronic currency you shoud write your blockchain address in
-                                    block chin address if you want monay you can write your cart number if you dont
-                                    write it
-                                    we send money to your confirmed cart </label>
-                                </br>
-
-                                </br>
-                                <label>Site Cart number:0000-0000-0000-0000
-                                    </br>
-                                    site wallet number:16584651689451468416895416896196846984
-                                </label>
-
-
-                            </div>
-
-                        </div>
-
-                </form>
-            </div>
-
-
-        </div>
-
-        </div>
-
-        </form>
-        </div>
-
-        <div id="settinpanel" class="row">
-            <div class="row">
-                <h2>Setting panel</h2>
-            </div>
-            <div class="row">
-                <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="passcode">Name</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="passcode" id="Passcode" placeholder=" " required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="countryname">lastname</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="countryname" id="countryname" placeholder=" " required>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="countryname">new password</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="countryname" id="countryname" placeholder=" " required>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="countryname">repid password</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="countryname" id="countryname" placeholder=" " required>
-                            <input style="margin-top: 35px" id="button1" type="submit" value="Change and save">
-
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div>
-                            <label>after Confirmation your ducument you can use Site </label>
-                        </div>
-
-                    </div>
-
-
-            </div>
         </div>
 
 
-        <div>
+    </div>
+
+    </div>
+
+    </form>
+    </div>
+
+    <div id="settinpanel" class="row">
+        <div class="row">
+            <h2>Setting panel</h2>
+        </div>
+        <div class="row">
+            <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="passcode">Name</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="passcode" id="Passcode" placeholder=" " required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="countryname">lastname</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="countryname">new password</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col span-1-of-3">
+                        <label for="countryname">repid password</label>
+                    </div>
+                    <div class="col span-2-of-3">
+                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                        <input style="margin-top: 35px" id="button1" type="submit" value="Change and save">
+
+                    </div>
+                </div>
 
 
-            <div class="row" id="pricesec">
-                <h2>Price table</h2>
-                 <center>
-		<table class="rwd-table" style="alignment: center">
-                  <thead>
-    <tr>
-      <th scope="col">Rank</th>
-      <th scope="col">Coin</th>
-      <th scope="col">Price(US)</th>
-      <th scope="col">Price(RL)</th>
-      <th scope="col">More Info</th>
-    </tr>
-  </thead>
-            <tbody>
+                <div class="row">
+                    <div>
+                        <label>after Confirmation your ducument you can use Site </label>
+                    </div>
 
-   						 {% for coin, value in coins.items %}
-    <tr>
-        <td>
-            {{ coin }}
-        </td>
-        <td>
-            {{ value.symbol }}
-        </td>
-        <td>
-            {{ value.price|intcomma }}(USD)
-        </td>
-        <td>
-          {% widthratio value.price 1 dollar as rialprice %}
-            {% widthratio rialprice 1 10 as rialprice %}
-            {{ rialprice|intcomma }}(RL)
-        </td>
-        <td>
-            <a href="{{ value.url }}" target="_blank">Details </a>
-        </td>
-    </tr>
- {% endfor %}
+                </div>
 
 
-
-</tbody>
-			</table>
-</center>
-
-            </div>
+        </div>
+    </div>
 
 
-            <div class="row" id="history">
-                <h2>History</h2>
-                <table class="rwd-table">
+    <div>
 
+
+        <div class="row" id="pricesec">
+            <h2>Price table</h2>
+            <center>
+                <table class="rwd-table" style="alignment: center">
+                    <thead>
                     <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
+                        <th scope="col">Rank</th>
+                        <th scope="col">Coin</th>
+                        <th scope="col">Price(US)</th>
+                        <th scope="col">Price(RL)</th>
+                        <th scope="col">More Info</th>
                     </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
+                    </thead>
+                    <tbody>
+
+                    {% for coin, value in coins.items %}
+                        <tr>
+                            <td>
+                                {{ coin }}
+                            </td>
+                            <td>
+                                {{ value.symbol }}
+                            </td>
+                            <td>
+                                {{ value.price|intcomma }}(USD)
+                            </td>
+                            <td>
+                                {% widthratio value.price 1 dollar as rialprice %}
+                                {% widthratio rialprice 1 10 as rialprice %}
+                                {{ rialprice|intcomma }}(RL)
+                            </td>
+                            <td>
+                                <a href="{{ value.url }}" target="_blank">Details </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
 
 
-                    </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
-                    </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
-                    </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
-                    </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
-                    </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
-                    </tr>
-                    <tr>
-                        <td data-th="ordercode">165165</td>
-                        <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                        <td data-th="Cartnumber">Blockchain code</td>
-                        <td data-th="datetime">1977</td>
-                        <td data-th="firstcurrency">bitcoin</td>
-                        <td data-th="Secendcurrency">Dollar</td>
-                        <td data-th="Price">135400000</td>
-                        <td data-th="Status">Wait</td>
-
-
-                    </tr>
-
-
+                    </tbody>
                 </table>
-
-                <p>&larr; Drag window (in editor or full page view) to see the effect. &rarr;</p>
-
-
-            </div>
+            </center>
 
         </div>
 
-    </section>
+
+        <div class="row" id="history">
+            <h2>History</h2>
+            <table class="rwd-table">
+
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
 
 
-    <footer>
-        <div class="row">
-            <div class="col span-1-of-2">
-                <ul class="footer-nav">
-                    <li><a href="/aboutus/">About us</a></li>
-                    <li><a href="/contactus/">Contant us</a></li>
-                    <li><a href="/accounts/signup/">Signup</a></li>
-                    <li><a href="/accounts/login/">login</a></li>
-                    <li><a href="#">iOS App</a></li>
-                    <li><a href="#">Android App</a></li>
-                </ul>
-            </div>
-            <div class="col span-1-of-2">
-                <ul class="social-links">
-                    <li><a href="#"><i class="ion-social-facebook"></i></a></li>
-                    <li><a href="#"><i class="ion-social-twitter"></i></a></li>
-                    <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
-                    <li><a href="#"><i class="ion-social-instagram"></i></a></li>
-                </ul>
-            </div>
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+                <tr>
+                    <td data-th="ordercode">165165</td>
+                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
+                    <td data-th="Cartnumber">Blockchain code</td>
+                    <td data-th="datetime">1977</td>
+                    <td data-th="firstcurrency">bitcoin</td>
+                    <td data-th="Secendcurrency">Dollar</td>
+                    <td data-th="Price">135400000</td>
+                    <td data-th="Status">Wait</td>
+
+
+                </tr>
+
+
+            </table>
+
+            <p>&larr; Drag window (in editor or full page view) to see the effect. &rarr;</p>
+
+
         </div>
-        <div class="row">
-            <p>
-                Copyright © 2019 Digital money
-            </p>
 
-            <p> Built with <a href="https://www.instagram.com/maxdib78">Mbahrami</a></p>
+    </div>
+
+</section>
+
+
+<footer>
+    <div class="row">
+        <div class="col span-1-of-2">
+            <ul class="footer-nav">
+                <li><a href="/aboutus/">About us</a></li>
+                <li><a href="/contactus/">Contant us</a></li>
+                <li><a href="/accounts/signup/">Signup</a></li>
+                <li><a href="/accounts/login/">login</a></li>
+                <li><a href="#">iOS App</a></li>
+                <li><a href="#">Android App</a></li>
+            </ul>
         </div>
-    </footer>
+        <div class="col span-1-of-2">
+            <ul class="social-links">
+                <li><a href="#"><i class="ion-social-facebook"></i></a></li>
+                <li><a href="#"><i class="ion-social-twitter"></i></a></li>
+                <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
+                <li><a href="#"><i class="ion-social-instagram"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <p>
+            Copyright © 2019 Digital money
+        </p>
 
-    </body>
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
-    <script src='http://cdn.jsdelivr.net/respond/1.4.2/respond.min.js'></script>
-    <script src='http://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js'></script>
-    <script src='http://cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js'></script>
+        <p> Built with <a href="https://www.instagram.com/maxdib78">Mbahrami</a></p>
+    </div>
+</footer>
+
+</body>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js'></script>
+<script src='http://cdn.jsdelivr.net/respond/1.4.2/respond.min.js'></script>
+<script src='http://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js'></script>
+<script src='http://cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js'></script>
 
 
-    <script src="{% static "js/panel.js" %}"></script>
+<script src="{% static "js/panel.js" %}"></script>
 
 
-    </body>
+</body>
 
-    </html>
+</html>

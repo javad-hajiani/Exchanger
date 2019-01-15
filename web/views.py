@@ -1,5 +1,8 @@
 import json
 import sys
+
+from django.contrib import messages
+
 from web.forms import UserForm, UserProfileForm, cardForm
 
 from web.forms import SignUpForm, UserForm
@@ -54,7 +57,13 @@ def contactus_page(request):
 @csrf_exempt
 @login_required
 def dashboard_page(request):
-    response = {"title": "Dashboard", "coins": getcoins(), "dollar": getdollar()}
+    card_form = cardForm()
+    card_form.fields['card_number'].widget.attrs.update({'placeholder': 'CardNumber'})
+    card_form.fields['date_exp'].widget.attrs.update({'placeholder': 'Date Of EXP'})
+    card_form.fields['cvv'].widget.attrs.update({'placeholder': 'CVV'})
+    card_form.fields['card_front'].widget.attrs.update({'placeholder': 'Card Front Side'})
+    card_form.fields['card_back'].widget.attrs.update({'placeholder': 'Card Back Side'})
+    response = {"title": "Dashboard", "coins": {}, "dollar": {}, "card_form": card_form}
     return render(request, "panel/dashboard.html", context=response)
 
 
@@ -92,6 +101,7 @@ def user_logout(request):
 def profile_page(request):
     return render(request, "panel/profile.html", context={})
 
+
 @csrf_exempt
 def register(request):
     context = RequestContext(request)
@@ -113,7 +123,7 @@ def register(request):
             login(request, user)
             return redirect('/accounts/profile/')
         else:
-            return HttpResponse("<script> alert(\"{} {}\");</script>".format(user_form.errors,profile_form.errors))
+            return HttpResponse("<script> alert(\"{} {}\");</script>".format(user_form.errors, profile_form.errors))
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -127,12 +137,13 @@ def register(request):
                                   {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
                                   context)
 
+
 @csrf_exempt
 @login_required
 def add_card(request):
     context = RequestContext(request)
     if request.method == 'POST':
-        card_form = cardForm(request.POST,request.FILES)
+        card_form = cardForm(request.POST, request.FILES)
         if card_form.is_valid():
             # card_form.initial = {"card_holder": request.user}
             # card_form.card_holder=request.user
@@ -140,16 +151,11 @@ def add_card(request):
             instance = card_form.save()
             instance.card_holder = request.user
             instance.save()
+            messages.add_message(request,messages.SUCCESS,"Your Card Added Successfully")
+            return redirect("/accounts/dashboard/")
         else:
-            return HttpResponse(card_form.errors)
+            messages.add_message(request, messages.ERROR, card_form.errors)
+            return redirect("/accounts/dashboard/")
     else:
-        card_form = cardForm()
-
-
-        card_form.fields['card_number'].widget.attrs.update({'placeholder': 'CardNumber'})
-        card_form.fields['date_exp'].widget.attrs.update({'placeholder': 'Date Of EXP'})
-        card_form.fields['cvv'].widget.attrs.update({'placeholder': 'CVV'})
-        card_form.fields['card_front'].widget.attrs.update({'placeholder': 'Card Front Side'})
-        card_form.fields['card_back'].widget.attrs.update({'placeholder': 'Card Back Side'})
-        response = {"title": "Dashboard", "coins": {}, "dollar": {}, "card_form": card_form}
-        return render(request,'panel/dashboard.html',context= {'card_form': card_form})
+        messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')
+        return redirect("/accounts/dashboard/")

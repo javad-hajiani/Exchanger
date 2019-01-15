@@ -11,7 +11,7 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.user.username
     def __str__(self):
-        return self.user.username
+        return "User : "+ self.user.username
 
 
 class Card(models.Model):
@@ -24,3 +24,5 @@ class Card(models.Model):
 
     def __unicode__(self):
         return self.card_holder.user.username
+    def __str__(self):
+        return "Card Number : {} for User : {}".format(self.card_number, self.card_holder)
