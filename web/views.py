@@ -1,6 +1,6 @@
 import json
 import sys
-from web.forms import UserForm, UserProfileForm
+from web.forms import UserForm, UserProfileForm, cardForm
 
 from web.forms import SignUpForm, UserForm
 from django.contrib.auth import login, authenticate, logout
@@ -58,12 +58,6 @@ def dashboard_page(request):
     return render(request, "panel/dashboard.html", context=response)
 
 
-@csrf_exempt
-def signup_page(request):
-    response = {"title": "SignUp Page"}
-    return render(request, "signup.html", context=response)
-
-
 def law_page(request):
     return render(request, "law.html")
 
@@ -93,31 +87,6 @@ def user_logout(request):
     return HttpResponseRedirect("/home/")
 
 
-@csrf_exempt
-def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        try:
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('/accounts/profile/')
-        except Exception as e:
-            print("Unexpected error:", e, form.errors)
-
-    else:
-        form = SignUpForm()
-    form.fields['first_name'].widget.attrs.update({'placeholder': 'FirstName'})
-    form.fields['last_name'].widget.attrs.update({'placeholder': 'LastName'})
-    form.fields['phone_number'].widget.attrs.update({'placeholder': 'PhoneNumber Ex: +98xxxxxxx'})
-    form.fields['email'].widget.attrs.update({'placeholder': 'Email Ex: example@gmail.com'})
-    form.fields['password1'].widget.attrs.update({'placeholder': 'Password'})
-    form.fields['password2'].widget.attrs.update({'placeholder': 'Password Confirmation'})
-    return render(request, 'signup.html', {'form': form})
-
-
 @login_required
 @csrf_exempt
 def profile_page(request):
@@ -144,7 +113,7 @@ def register(request):
             login(request, user)
             return redirect('/accounts/profile/')
         else:
-            return HttpResponse(user_form.errors,profile_form.errors)
+            return HttpResponse("<script> alert(\"{} {}\");</script>".format(user_form.errors,profile_form.errors))
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -157,3 +126,30 @@ def register(request):
         return render_to_response('signup.html',
                                   {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
                                   context)
+
+@csrf_exempt
+@login_required
+def add_card(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        card_form = cardForm(request.POST,request.FILES)
+        if card_form.is_valid():
+            # card_form.initial = {"card_holder": request.user}
+            # card_form.card_holder=request.user
+
+            instance = card_form.save()
+            instance.card_holder = request.user
+            instance.save()
+        else:
+            return HttpResponse(card_form.errors)
+    else:
+        card_form = cardForm()
+
+
+        card_form.fields['card_number'].widget.attrs.update({'placeholder': 'CardNumber'})
+        card_form.fields['date_exp'].widget.attrs.update({'placeholder': 'Date Of EXP'})
+        card_form.fields['cvv'].widget.attrs.update({'placeholder': 'CVV'})
+        card_form.fields['card_front'].widget.attrs.update({'placeholder': 'Card Front Side'})
+        card_form.fields['card_back'].widget.attrs.update({'placeholder': 'Card Back Side'})
+        response = {"title": "Dashboard", "coins": {}, "dollar": {}, "card_form": card_form}
+        return render(request,'panel/dashboard.html',context= {'card_form': card_form})

@@ -15,6 +15,8 @@ urlpatterns = [
     path('accounts/dashboard/', dashboard_page),
     path('accounts/profile/', profile_page),
     path('accounts/logout/', user_logout),
+    path('addcard/', add_card),
     path('law/', law_page),
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

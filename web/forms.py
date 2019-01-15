@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from web.models import UserProfile
+from web.models import UserProfile, Card
 
 
 class SignUpForm(UserCreationForm):
@@ -31,3 +31,15 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('phone_number', 'is_verified', 'picture')
+        exclude =("card_holder", )
+
+
+class cardForm(forms.ModelForm):
+    class Meta:
+        model = Card
+        fields = ('card_number','date_exp','cvv','card_front','card_back')
+
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop('user', '')
+    #     super(cardForm, self).__init__(*args, **kwargs)
+    #     self.base_fields['card_holder'] = forms.ModelChoiceField(queryset=User.objects.filter(card_holder=user))

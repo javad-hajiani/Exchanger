@@ -1,6 +1,5 @@
 {% load static %}
 {% load humanize %}
-{% if user.is_authenticated %}
 
 
 
@@ -130,15 +129,7 @@
                             <label for="name">Cart number</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <input type="text" name="name" id="cartnumber" placeholder=" " required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col span-1-of-3">
-                            <label for="name">Cart holder</label>
-                        </div>
-                        <div class="col span-2-of-3">
-                            <input type="text" name="text" id="holder" placeholder=" " required>
+                            {{ card_form.card_number }}
                         </div>
                     </div>
                     <div class="row">
@@ -146,7 +137,7 @@
                             <label for="dateexp">Date of EXP</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <input type="text" name="name" id="cartnumber" placeholder=" " required>
+                            {{ card_form.date_exp }}
 
                         </div>
                     </div>
@@ -156,7 +147,7 @@
                             <label for="dateexp">CVV</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <input type="text" name="name" id="CVV" placeholder=" " required>
+                            {{ card_form.cvv }}
 
                         </div>
                     </div>
@@ -166,7 +157,7 @@
                             <label for="fileField2">Photo of your cart:</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <input type="file" name="fileField2" id="fileField2">
+                            {{ card_form.card_front }}
 
                         </div>
                     </div>
@@ -175,10 +166,11 @@
                             <label for="fileField3">Photo of Back of your cart</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <input type="file" name="fileField3" id="fileField3">
+                            {{ card_form.card_back }}
 
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col span-1-of-3">
                             <label>&nbsp;</label>
@@ -190,7 +182,7 @@
 
                     <div class="row">
                         <div>
-                            <label>after Confirmation your ducument you can use this cart </label>
+                            <label>after Confirmation your Document you can use this cart </label>
                         </div>
 
                     </div>
@@ -239,7 +231,6 @@
                                 <option value="friends" selected>Dollar</option>
                                 <option value="search">Rial</option>
                                 <option value="ad">Bittcoin</option>
-                                <option value="other">mahdicoin</option>
                             </select>
                         </div>
                     </div>
@@ -605,8 +596,3 @@
     </body>
 
     </html>
-{% else %}
-    <h2>Forbbiden!</h2>
-    <p>You Are Not Logged In!</p>
-    <a href="/accounts/login/">Login</a>
-{% endif %}
