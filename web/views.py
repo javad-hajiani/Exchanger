@@ -1,21 +1,11 @@
-import json
-import sys
-
 from django.contrib import messages
 from django.db import IntegrityError
-
-from web.forms import UserForm, UserProfileForm, cardForm, VerificationForm
-
+from web.forms import UserProfileForm, cardForm, VerificationForm
 from web.forms import UserForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.forms import forms
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, render_to_response
-from django.template import RequestContext
-from django.urls import reverse_lazy
-from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 import requests
 
@@ -84,7 +74,6 @@ def law_page(request):
 
 @csrf_exempt
 def user_login(request):
-    context = RequestContext(request)
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -92,13 +81,16 @@ def user_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return HttpResponseRedirect('/accounts/dashboard/')
+                messages.add_message(request, messages.SUCCESS, "You're Logged in Successfully")
+                return redirect('/accounts/dashboard/')
             else:
-                return HttpResponse("Your Rango account is disabled.")
+                messages.add_message(request, messages.ERROR, "Your account is disabled.")
+                return redirect("/home/")
         else:
-            return HttpResponse("Invalid login details supplied.")
+            messages.add_message(request, messages.ERROR, "Invalid login details supplied.")
+            return redirect("/home")
     else:
-        return render_to_response('login.html', {}, context)
+        return render('login.html', context={})
 
 
 @login_required
@@ -115,26 +107,29 @@ def profile_page(request):
 
 @csrf_exempt
 def register(request):
-    context = RequestContext(request)
     registered = False
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
         profile_form = UserProfileForm(data=request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-            registered = True  # Invalid form or forms - mistakes or something else?
-            username = user_form.cleaned_data.get('username')
-            raw_password = user_form.cleaned_data.get('password')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
+            try:
+                user = user_form.save()
+                user.set_password(user.password)
+                user.save()
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                profile.save()
+                registered = True  # Invalid form or forms - mistakes or something else?
+                username = user_form.cleaned_data.get('username')
+                raw_password = user_form.cleaned_data.get('password')
+                user = authenticate(username=username, password=raw_password)
+                login(request, user)
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, e)
             return redirect('/accounts/profile/')
         else:
-            return HttpResponse("<script> alert(\"{} {}\");</script>".format(user_form.errors, profile_form.errors))
+            messages.add_message(request, messages.ERROR, user_form.errors + ' ' + profile_form.errors)
+            redirect('/home/')
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -144,9 +139,8 @@ def register(request):
         profile_form.fields['phone_number'].widget.attrs.update({'placeholder': 'PhoneNumber Ex: +98xxxxxxx'})
         user_form.fields['email'].widget.attrs.update({'placeholder': 'Email Ex: example@gmail.com'})
         user_form.fields['password'].widget.attrs.update({'placeholder': 'Password'})
-        return render_to_response('signup.html',
-                                  {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
-                                  context)
+        return render('signup.html',
+                      context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
 @csrf_exempt
@@ -155,13 +149,13 @@ def add_card(request):
     if request.method == 'POST':
         card_form = cardForm(request.POST, request.FILES)
         if card_form.is_valid():
-            # card_form.initial = {"card_holder": request.user}
-            # card_form.card_holder=request.user
-
-            instance = card_form.save()
-            instance.card_holder = request.user
-            instance.save()
-            messages.add_message(request, messages.SUCCESS, "Your Card Added Successfully")
+            try:
+                instance = card_form.save()
+                instance.card_holder = request.user
+                instance.save()
+                messages.add_message(request, messages.SUCCESS, "Your Card Added Successfully")
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, e)
             return redirect("/accounts/dashboard/")
         else:
             messages.add_message(request, messages.ERROR, card_form.errors)
@@ -183,7 +177,7 @@ def verification_page(request):
                 instance.save()
                 messages.add_message(request, messages.SUCCESS, "Your Verification Document Added Successfully")
             except IntegrityError:
-                messages.add_message(request,messages.ERROR,'Your User Already have Verification Request!')
+                messages.add_message(request, messages.ERROR, 'Your User Already have Verification Request!')
             except Exception as e:
                 messages.add_message(request, messages.ERROR, e)
             return redirect("/accounts/dashboard/")

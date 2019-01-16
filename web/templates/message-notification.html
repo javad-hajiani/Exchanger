@@ -1,0 +1,13 @@
+{% load static %}
+{% block messages-notification %}
+    <link rel="stylesheet" href="{% static "css/timed.css" %}">
+
+    {% if messages %}
+            {% for message in messages %}
+                <div class="{{ message.tags }}">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>{{ message.tags }}!</strong>&nbsp;&nbsp;{{ message }}.
+                </div>
+        {% endfor %}
+    {% endif %}
+{% endblock messages-notification %}

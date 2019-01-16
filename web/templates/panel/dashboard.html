@@ -14,7 +14,6 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css'>
 
     <link rel="stylesheet" href="{% static "css/panel.css" %}">
-    <link rel="stylesheet" href="{% static "css/timed.css" %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link rel=”stylesheet” href=”//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css”>
     <link rel=”stylesheet” href=”/resources/demos/style.css”>
@@ -25,14 +24,7 @@
 </head>
 
 <body>
-    {% if messages %}
-            {% for message in messages %}
-                <div class="{{ message.tags }}">
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                    <strong>{{ message.tags }}!</strong>&nbsp;&nbsp;{{ message }}.
-                </div>
-        {% endfor %}
-    {% endif %}
+{% include "../message-notification.html" %}
 <body>
 <header>
     <div style="padding: 15px; color: white; ">Hi {{ user.username }}!</div>
