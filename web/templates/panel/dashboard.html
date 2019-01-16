@@ -27,7 +27,7 @@
 {% include "../message-notification.html" %}
 <body>
 <header>
-    <div style="padding: 15px; color: white; ">Hi {{ user.username }}!</div>
+
     <nav>
         <div class="row">
             <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo">
@@ -38,9 +38,8 @@
                 <li><a id="salebuy" href="#features">Trade Coins</a></li>
                 <li><a id="adnewscart" href="#features">Add cart</a></li>
                 <li><a id="vvv" href="#features">Verification of documents</a></li>
-
-                <li><a id="settingmenu" href="#features">Account Setting </a></li>
-
+                <li><a href="/accounts/dashboard/">Dashboard</a></li>
+                <li><a id="settingmenu" href="#features">Profile</a></li>
                 <li><a href="/accounts/logout/">Logout</a></li>
             </ul>
             <a class="mobile-nav-icon js--nav-icon"><i class="ion-navicon-round"></i></a>
@@ -376,7 +375,7 @@
 
                     </div>
                 </div>
-
+            </form>
 
                 <div class="row">
                     <div>
