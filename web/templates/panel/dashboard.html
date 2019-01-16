@@ -14,20 +14,25 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.css'>
 
     <link rel="stylesheet" href="{% static "css/panel.css" %}">
+    <link rel="stylesheet" href="{% static "css/timed.css" %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link rel=”stylesheet” href=”//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css”>
     <link rel=”stylesheet” href=”/resources/demos/style.css”>
 
 
-    {% if messages %}
-        {% for message in messages %}
-            <script>alert("{{ message }}")</script>
-        {% endfor %}
-    {% endif %}
+
+
 </head>
 
 <body>
-
+    {% if messages %}
+            {% for message in messages %}
+                <div class="{{ message.tags }}">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <strong>{{ message.tags }}!</strong>&nbsp;&nbsp;{{ message }}.
+                </div>
+        {% endfor %}
+    {% endif %}
 <body>
 <header>
     <div style="padding: 15px; color: white; ">Hi {{ user.username }}!</div>
@@ -64,13 +69,13 @@
             <h2>Verification of documents</h2>
         </div>
         <div class="row">
-            <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
+            <form action="/verification/" method="post" enctype="multipart/form-data" class="contact-form">
                 <div class="row">
                     <div class="col span-1-of-3">
                         <label for="passcode">Passport code</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="passcode" id="Passcode" placeholder=" " required>
+                        {{ Verification_Form.passport_code }}
                     </div>
                 </div>
                 <div class="row">
@@ -78,7 +83,7 @@
                         <label for="countryname">Country name</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                        {{ Verification_Form.country_name }}
                     </div>
                 </div>
                 <div class="row">
@@ -86,8 +91,7 @@
                         <label for="email">Date of birthday</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="date" name="date" id="date">
-                        <input id="date">
+                        {{ Verification_Form.birth_date }}
                     </div>
                 </div>
 
@@ -96,10 +100,10 @@
                         <label>Address</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <textarea name="Address" placeholder=" "></textarea>
+                        {{ Verification_Form.address }}
                     </div>
                     <label for="fileField">Upload Passport photo</label>
-                    <input type="file" name="fileField" id="fileField">
+                        {{ Verification_Form.passport_photo }}
                 </div>
                 <div class="row">
                     <div class="col span-1-of-3">
@@ -593,7 +597,6 @@
 <script src='http://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js'></script>
 <script src='http://cdn.jsdelivr.net/selectivizr/1.0.3b/selectivizr.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js'></script>
-
 
 <script src="{% static "js/panel.js" %}"></script>
 

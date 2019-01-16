@@ -2,10 +2,11 @@ import json
 import sys
 
 from django.contrib import messages
+from django.db import IntegrityError
 
-from web.forms import UserForm, UserProfileForm, cardForm
+from web.forms import UserForm, UserProfileForm, cardForm, VerificationForm
 
-from web.forms import SignUpForm, UserForm
+from web.forms import UserForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -57,13 +58,23 @@ def contactus_page(request):
 @csrf_exempt
 @login_required
 def dashboard_page(request):
+    ######################## Card Form Place Holders ################
     card_form = cardForm()
     card_form.fields['card_number'].widget.attrs.update({'placeholder': 'CardNumber'})
     card_form.fields['date_exp'].widget.attrs.update({'placeholder': 'Date Of EXP'})
     card_form.fields['cvv'].widget.attrs.update({'placeholder': 'CVV'})
     card_form.fields['card_front'].widget.attrs.update({'placeholder': 'Card Front Side'})
     card_form.fields['card_back'].widget.attrs.update({'placeholder': 'Card Back Side'})
-    response = {"title": "Dashboard", "coins": {}, "dollar": {}, "card_form": card_form}
+    ######################## Verification Form Place Holders ################
+    verification_form = VerificationForm()
+    verification_form.fields['passport_code'].widget.attrs.update({'placeholder': 'Passport Code'})
+    verification_form.fields['country_name'].widget.attrs.update({'placeholder': 'Country Name'})
+    verification_form.fields['birth_date'].widget.attrs.update({'placeholder': 'Date of Birth'})
+    verification_form.fields['address'].widget.attrs.update({'placeholder': 'Address'})
+    verification_form.fields['passport_photo'].widget.attrs.update({'placeholder': 'Passport Photo'})
+    ######################## End ################
+    response = {"title": "Dashboard", "coins": {}, "dollar": {}, "card_form": card_form,
+                "Verification_Form": verification_form}
     return render(request, "panel/dashboard.html", context=response)
 
 
@@ -141,7 +152,6 @@ def register(request):
 @csrf_exempt
 @login_required
 def add_card(request):
-    context = RequestContext(request)
     if request.method == 'POST':
         card_form = cardForm(request.POST, request.FILES)
         if card_form.is_valid():
@@ -151,10 +161,34 @@ def add_card(request):
             instance = card_form.save()
             instance.card_holder = request.user
             instance.save()
-            messages.add_message(request,messages.SUCCESS,"Your Card Added Successfully")
+            messages.add_message(request, messages.SUCCESS, "Your Card Added Successfully")
             return redirect("/accounts/dashboard/")
         else:
             messages.add_message(request, messages.ERROR, card_form.errors)
+            return redirect("/accounts/dashboard/")
+    else:
+        messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')
+        return redirect("/accounts/dashboard/")
+
+
+@login_required
+@csrf_exempt
+def verification_page(request):
+    if request.method == 'POST':
+        verification_form = VerificationForm(request.POST, request.FILES)
+        if verification_form.is_valid():
+            try:
+                instance = verification_form.save()
+                instance.user = request.user
+                instance.save()
+                messages.add_message(request, messages.SUCCESS, "Your Verification Document Added Successfully")
+            except IntegrityError:
+                messages.add_message(request,messages.ERROR,'Your User Already have Verification Request!')
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, e)
+            return redirect("/accounts/dashboard/")
+        else:
+            messages.add_message(request, messages.ERROR, verification_form.errors)
             return redirect("/accounts/dashboard/")
     else:
         messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')

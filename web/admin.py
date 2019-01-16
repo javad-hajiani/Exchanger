@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from web.models import UserProfile, Card
+from web.models import UserProfile, Card, Verification
 
 admin.site.register(UserProfile)
 admin.site.register(Card)
+admin.site.register(Verification)

@@ -16,6 +16,7 @@ urlpatterns = [
     path('accounts/profile/', profile_page),
     path('accounts/logout/', user_logout),
     path('addcard/', add_card),
+    path('verification/', verification_page),
     path('law/', law_page),
 
 

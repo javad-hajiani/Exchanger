@@ -1,0 +1,25 @@
+.success  {
+  padding: 20px;
+  background-color: #10f4c8;
+  color: #2c3e50;
+}
+.error  {
+    padding: 20px;
+    background-color: #fc8d6f;
+    color: #c5ffec;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
