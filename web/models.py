@@ -5,8 +5,6 @@ from django.db import models
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15, blank=True)
-    picture = models.ImageField(upload_to='profile_images/', blank=True)
-
     def __unicode__(self):
         return self.user.username
 
@@ -30,15 +28,15 @@ class Card(models.Model):
 
 
 class Verification(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     passport_code = models.CharField(max_length=30)
     country_name = models.CharField(max_length=20)
     birth_date = models.DateField()
     address = models.TextField(max_length=500)
     passport_photo = models.ImageField(upload_to='passport_photo/')
-    is_verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(max_length=1, default=False)
     def __unicode__(self):
-        return self.user.user.username
+        return self.user.user
 
     def __str__(self):
         return "Verification for : {}".format(self.user)

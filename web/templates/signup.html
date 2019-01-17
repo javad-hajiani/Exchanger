@@ -43,16 +43,16 @@
         {{ user_form.email }}
         {{ profile_form.phone_number }}
         {{ user_form.password }}
-        {{ profile_form.picture }}
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
 
 				<div class="checkbox">
-					<input type="checkbox" name="terms" id="terms">
+                    <input type="checkbox" name="terms" id="terms" checked="true">
 					<label for="terms" class="checkbox-label"></label>
 					<label style=" font-family: 'Lato', 'Arial', sans-serif;" for="terms" class="description">I agree with <a href="/law/">Terms & conditions</a></label>
-						<label style=" font-family: 'Lato', 'Arial', sans-serif;" for="terms" class="description">if you have accont<a href="/accounts/accounts/login/">  click here</a></label>
+                    <label style=" font-family: 'Lato', 'Arial', sans-serif;" for="terms" class="description">if you
+                        have accont<a href="/accounts/login/"> click here</a></label>
 				</div>
 				<button style=" font-family: 'Lato', 'Arial', sans-serif;" type="submit" name="submit">Sign up</button>
 			</form>

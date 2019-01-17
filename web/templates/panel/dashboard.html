@@ -33,12 +33,11 @@
             <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo">
             <img src="{% static "img/circle-png-circle-png-hd-1600.png" %}" alt=" logo" class="logo-black">
             <ul class="main-nav js--main-nav">
+                <li><a href="/accounts/dashboard/">Dashboard</a></li>
                 <li><a id="historymenbtn" href="#features">Trades History</a></li>
-
                 <li><a id="salebuy" href="#features">Trade Coins</a></li>
                 <li><a id="adnewscart" href="#features">Add cart</a></li>
-                <li><a id="vvv" href="#features">Verification of documents</a></li>
-                <li><a href="/accounts/dashboard/">Dashboard</a></li>
+                <li><a id="vvv" href="#features">Verification</a></li>
                 <li><a id="settingmenu" href="#features">Profile</a></li>
                 <li><a href="/accounts/logout/">Logout</a></li>
             </ul>
@@ -122,6 +121,7 @@
         <div class="row">
             <h2>Add cart</h2>
         </div>
+        {% if is_verified %}
         <div class="row">
             <form action="/addcard/" method="post" enctype="multipart/form-data" class="contact-form">
                 <div class="row">
@@ -187,10 +187,11 @@
 
                 </div>
 
-
+            </form>
+        {% else %}
+            <div> You Should Send Verification Document and Wait For Approve it</div>
+        {% endif %}
         </div>
-
-        </form>
 
 
     </div>
@@ -375,7 +376,7 @@
 
                     </div>
                 </div>
-            </form>
+
 
                 <div class="row">
                     <div>
@@ -384,8 +385,9 @@
 
                 </div>
 
-
+            </form>
         </div>
+
     </div>
 
 

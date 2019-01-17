@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 from web.models import UserProfile, Card, Verification
@@ -18,7 +17,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('phone_number', 'picture')
+        fields = ('phone_number',)
         exclude = ("card_holder",)
 
 

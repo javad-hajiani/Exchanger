@@ -1,13 +1,15 @@
+import requests
 from django.contrib import messages
-from django.db import IntegrityError
-from web.forms import UserProfileForm, cardForm, VerificationForm
-from web.forms import UserForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-import requests
+from django_function_cache import cached
+
+from web.forms import UserForm
+from web.forms import UserProfileForm, cardForm, VerificationForm
+from web.models import Verification
 
 
 @csrf_exempt
@@ -18,7 +20,7 @@ def redirect_view(request):
 
 @csrf_exempt
 def home_page(request):
-    response = {"title": "Exchanger", "coins": getcoins(), "dollar": getdollar()}
+    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": cached(getdollar)()}
     return render(request, "home.html", context=response)
 
 
@@ -48,6 +50,11 @@ def contactus_page(request):
 @csrf_exempt
 @login_required
 def dashboard_page(request):
+    verified = Verification.objects.filter(user=request.user).first()
+    if verified:
+        verified = verified.is_verified
+    else:
+        verified = False
     ######################## Card Form Place Holders ################
     card_form = cardForm()
     card_form.fields['card_number'].widget.attrs.update({'placeholder': 'CardNumber'})
@@ -63,8 +70,9 @@ def dashboard_page(request):
     verification_form.fields['address'].widget.attrs.update({'placeholder': 'Address'})
     verification_form.fields['passport_photo'].widget.attrs.update({'placeholder': 'Passport Photo'})
     ######################## End ################
-    response = {"title": "Dashboard", "coins": {}, "dollar": {}, "card_form": card_form,
-                "Verification_Form": verification_form}
+    response = {"title": "Dashboard", "coins": cached(getcoins)(), "dollar": cached(getdollar)(),
+                "card_form": card_form, "Verification_Form": verification_form, "is_verified": verified}
+    print(response)
     return render(request, "panel/dashboard.html", context=response)
 
 
@@ -90,7 +98,7 @@ def user_login(request):
             messages.add_message(request, messages.ERROR, "Invalid login details supplied.")
             return redirect("/home")
     else:
-        return render('login.html', context={})
+        return render(request, 'login.html', context={})
 
 
 @login_required
@@ -126,7 +134,7 @@ def register(request):
                 login(request, user)
             except Exception as e:
                 messages.add_message(request, messages.ERROR, e)
-            return redirect('/accounts/profile/')
+            return redirect('/accounts/dashboard/')
         else:
             messages.add_message(request, messages.ERROR, user_form.errors + ' ' + profile_form.errors)
             redirect('/home/')
@@ -134,12 +142,13 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
         user_form.fields['first_name'].widget.attrs.update({'placeholder': 'FirstName'})
+        user_form.fields['first_name'].widget.attrs.update({'tabindex': 0})
         user_form.fields['last_name'].widget.attrs.update({'placeholder': 'LastName'})
         user_form.fields['username'].widget.attrs.update({'placeholder': 'UserName'})
         profile_form.fields['phone_number'].widget.attrs.update({'placeholder': 'PhoneNumber Ex: +98xxxxxxx'})
         user_form.fields['email'].widget.attrs.update({'placeholder': 'Email Ex: example@gmail.com'})
         user_form.fields['password'].widget.attrs.update({'placeholder': 'Password'})
-        return render('signup.html',
+        return render(request, 'signup.html',
                       context={'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
@@ -176,8 +185,8 @@ def verification_page(request):
                 instance.user = request.user
                 instance.save()
                 messages.add_message(request, messages.SUCCESS, "Your Verification Document Added Successfully")
-            except IntegrityError:
-                messages.add_message(request, messages.ERROR, 'Your User Already have Verification Request!')
+            # except IntegrityError as error:
+            #     messages.add_message(request, messages.ERROR, error)
             except Exception as e:
                 messages.add_message(request, messages.ERROR, e)
             return redirect("/accounts/dashboard/")
