@@ -200,18 +200,13 @@
             <h2>Buy and sale</h2>
         </div>
         <div class="row">
-            <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
+            <form action="/verifyorder/" method="post" enctype="multipart/form-data" class="contact-form">
                 <div class="row">
                     <div class="col span-1-of-3">
                         <label for="find-us">choose your currency </label>
                     </div>
                     <div class="col span-2-of-3">
-                        <select name="find-us" id="find-us">
-                            <option value="friends" selected>Dollar</option>
-                            <option value="search">Rial</option>
-                            <option value="ad">Bittcoin</option>
-                            <option value="other">mahdicoin</option>
-                        </select>
+                        {{ Order_Form.source_currency }}
                     </div>
                 </div>
                 <div class="row">
@@ -219,7 +214,7 @@
                         <label for="name">How much</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="text" id="number" placeholder=" " required>
+                        {{ Order_Form.source_amount }}
                     </div>
                 </div>
 
@@ -228,11 +223,7 @@
                         <label for="find-us">What you want </label>
                     </div>
                     <div class="col span-2-of-3">
-                        <select name="find-us" id="find-us">
-                            <option value="friends" selected>Dollar</option>
-                            <option value="search">Rial</option>
-                            <option value="ad">Bittcoin</option>
-                        </select>
+                        {{ Order_Form.destination_currency }}
                     </div>
                 </div>
 
@@ -241,8 +232,7 @@
                         <label for="dateexp">You shoud pay</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="name" id="nextstep2" placeholder=" " required>
-
+                        {{ Order_Form.destination_amount }}
                     </div>
                 </div>
                 </br>
@@ -263,28 +253,27 @@
                         <label id="lable22" for="dateexp">Check number</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="name" id="nextstep123" placeholder=" " required>
+                        {{ Order_Form.receipt_code }}
+                        {#                        <input type="text" name="name" id="nextstep123" placeholder=" " required>#}
+
 
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col span-1-of-3">
-                        <label id="lable222" for="dateexp">Blackchin number*</label>
+                        <label id="lable222" for="dateexp">Block chain Wallet</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="name" id="nextstep1234" placeholder=" " required>
-
+                        {#                        <input type="text" name="name" id="nextstep1234" placeholder=" " required>#}
+                        {{ Order_Form.blockchain_wallet }}
                     </div>
                     <div class="row" id="asd">
                         <div class="col span-1-of-3">
                             <label id="asd" for="find-us">Choose your cart</label>
                         </div>
                         <div class="col span-2-of-3">
-                            <select name="find-us">
-                                <option value="friends" selected>0000 0000 0000 0000</option>
-
-                            </select>
+                            {{ Order_Form.card_number }}
                         </div>
                     </div>
                     <div class="col span-2-of-3">
@@ -403,7 +392,7 @@
                         <th scope="col">Rank</th>
                         <th scope="col">Coin</th>
                         <th scope="col">Price(US)</th>
-                        <th scope="col">Price(RL)</th>
+                        <th scope="col">Price(IRR)</th>
                         <th scope="col">More Info</th>
                     </tr>
                     </thead>
@@ -423,7 +412,7 @@
                             <td>
                                 {% widthratio value.price 1 dollar as rialprice %}
                                 {% widthratio rialprice 1 10 as rialprice %}
-                                {{ rialprice|intcomma }}(RL)
+                                {{ rialprice|intcomma }}(IRR)
                             </td>
                             <td>
                                 <a href="{{ value.url }}" target="_blank">Details </a>
@@ -441,109 +430,59 @@
 
         <div class="row" id="history">
             <h2>History</h2>
+            <center>
             <table class="rwd-table">
-
+                <thead>
                 <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
+                    <th scope="col">Receipt Code</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">BlockChain Wallet</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">First Currency</th>
+                    <th scope="col">Second Currency</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Status</th>
                 </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>
+                            {{ order.receipt_code }}
+                        </td>
+                        <td>
+                            {{ order.user.username }}
+                        </td>
+                        <td>
+                            {{ order.blockchain_wallet }}
+                        </td>
+                        <td>
+                            {{ order.order_date }}
+                        </td>
+                        <td>
+                            {{ order.source_currency }}
+                        </td>
+
+                        <td>
+                            {{ order.destination_currency }}
+                        </td>
+
+                        <td>
+                            {{ order.destination_amount }}
+                        </td>
+
+                        <td>
+                            {{ order.transaction_status }}
+                        </td>
+                    </tr>
+                {% endfor %}
 
 
-                </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
-                </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
-                </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
-                </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
-                </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
-                </tr>
-                <tr>
-                    <td data-th="ordercode">165165</td>
-                    <td data-th="Cartnumber">Adventure, Sci-fi</td>
-                    <td data-th="Cartnumber">Blockchain code</td>
-                    <td data-th="datetime">1977</td>
-                    <td data-th="firstcurrency">bitcoin</td>
-                    <td data-th="Secendcurrency">Dollar</td>
-                    <td data-th="Price">135400000</td>
-                    <td data-th="Status">Wait</td>
-
-
-                </tr>
+                </tbody>
 
 
             </table>
-
-            <p>&larr; Drag window (in editor or full page view) to see the effect. &rarr;</p>
+            </center>
 
 
         </div>

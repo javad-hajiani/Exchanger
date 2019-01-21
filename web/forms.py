@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from web.models import UserProfile, Card, Verification
+from web.models import UserProfile, Card, Verification, Order
+from web.models import sourcecurrency
 
 
 class UserForm(forms.ModelForm):
@@ -33,3 +34,26 @@ class VerificationForm(forms.ModelForm):
         model = Verification
         widgets = {'birth_date': forms.DateInput(attrs={'type': 'date'})}
         fields = ('passport_code', 'country_name', 'birth_date', 'address', 'passport_photo')
+
+
+class OrderForm(forms.ModelForm):
+    source_currency = forms.ChoiceField(choices=sourcecurrency)
+    destination_currency = forms.ChoiceField()
+    card_number = forms.ChoiceField()
+
+    def __init__(self, *args, **kwargs):
+        membercards = kwargs.pop('cards')
+        coins = kwargs.pop('coins')
+        super(OrderForm, self).__init__(*args, **kwargs)
+        mychoice = Card.objects.filter(card_holder=membercards)
+        choice = []
+        for i in mychoice:
+            choice.append((i.card_number, i.card_number))
+        self.fields['card_number'] = forms.ChoiceField(choices=choice)
+        self.fields['destination_currency'] = forms.ChoiceField(choices=coins)
+        super(OrderForm, self).full_clean()
+
+    class Meta:
+        model = Order
+        fields = ('source_currency', 'source_amount', 'destination_currency', 'destination_amount', 'receipt_code',
+                  'blockchain_wallet', 'card_number')

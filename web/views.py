@@ -2,14 +2,30 @@ import requests
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django_function_cache import cached
 
-from web.forms import UserForm
+from web.forms import UserForm, OrderForm
 from web.forms import UserProfileForm, cardForm, VerificationForm
-from web.models import Verification
+from web.models import Verification, Order
+
+
+#
+# def user_cards(request):
+#     response = []
+#     for i in orders:
+#         response.append(i)
+#     return HttpResponse(response)
+
+
+def coinsselector():
+    response = []
+    coins = cached(getcoins)()
+    for i in coins:
+        response.append((coins[i]["symbol"], coins[i]["symbol"]))
+    return response
 
 
 @csrf_exempt
@@ -20,7 +36,7 @@ def redirect_view(request):
 
 @csrf_exempt
 def home_page(request):
-    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": cached(getdollar)()}
+    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": "11500"}
     return render(request, "home.html", context=response)
 
 
@@ -69,9 +85,19 @@ def dashboard_page(request):
     verification_form.fields['birth_date'].widget.attrs.update({'placeholder': 'Date of Birth'})
     verification_form.fields['address'].widget.attrs.update({'placeholder': 'Address'})
     verification_form.fields['passport_photo'].widget.attrs.update({'placeholder': 'Passport Photo'})
+    ######################## Order Form Place Holders ################
+    order_form = OrderForm(cards=request.user, coins=coinsselector())
+    order_form.fields['receipt_code'].widget.attrs.update({'id': 'nextstep123'})
+    # order_form.fields['receipt_code'].widget.attrs.update({'style': 'display:none;'})
+    order_form.fields['blockchain_wallet'].widget.attrs.update({'id': 'nextstep1234'})
+    order_form.fields['source_amount'].widget.attrs.update({'onchange': 'setamount()'})
+    order_form.fields['source_currency'].widget.attrs.update({'onchange': 'setamount()'})
+    order_form.fields['destination_currency'].widget.attrs.update({'onchange': 'setamount()'})
     ######################## End ################
-    response = {"title": "Dashboard", "coins": cached(getcoins)(), "dollar": cached(getdollar)(),
-                "card_form": card_form, "Verification_Form": verification_form, "is_verified": verified}
+    orders = Order.objects.filter(user=request.user)
+    response = {"title": "Dashboard", "coins": cached(getcoins)(), "dollar": "115000", "card_form": card_form,
+                "Verification_Form": verification_form, "orders": orders, "Order_Form": order_form,
+                "is_verified": verified}
     print(response)
     return render(request, "panel/dashboard.html", context=response)
 
@@ -196,3 +222,36 @@ def verification_page(request):
     else:
         messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')
         return redirect("/accounts/dashboard/")
+
+
+@login_required
+@csrf_exempt
+def verifyorder_page(request):
+    if request.method == 'POST':
+        order_Form = OrderForm(request.POST, cards=request.user, coins=coinsselector())
+        if order_Form.is_valid():
+            try:
+                instance = order_Form.save()
+                instance.user = request.user
+                instance.status = "Pending"
+                instance.save()
+                messages.add_message(request, messages.SUCCESS,
+                                     "Your Order Added Successfully")  # except IntegrityError as error:  # messages.add_message(request, messages.ERROR, error)
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, e)
+            return redirect("/accounts/dashboard/")
+        else:
+            messages.add_message(request, messages.ERROR, order_Form.errors)
+        return redirect("/accounts/dashboard/")
+    else:
+        messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')
+        return redirect("/accounts/dashboard/")
+
+
+def coinswithamount(request, coin):
+    coins = cached(getcoins)()
+    # dollar = cached(getdollar)()
+    for i in coins:
+        if coins[i]["symbol"] == coin:
+            return JsonResponse({'coin': coin, 'USD': coins[i]["price"], 'IRR': 115000})
+    return HttpResponse("I Cant Found Your Coin")
