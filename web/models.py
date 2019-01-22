@@ -22,7 +22,7 @@ class Card(models.Model):
     cvv = models.CharField(max_length=10)
     card_front = models.ImageField(upload_to='cards/')
     card_back = models.ImageField(upload_to='cards/')
-
+    is_verified = models.BooleanField(default=False)
     def __unicode__(self):
         return self.card_holder.user.username
 

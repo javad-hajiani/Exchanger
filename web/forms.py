@@ -12,7 +12,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'first_name', 'last_name')
 
 
 class UserProfileForm(forms.ModelForm):
@@ -45,7 +45,7 @@ class OrderForm(forms.ModelForm):
         membercards = kwargs.pop('cards')
         coins = kwargs.pop('coins')
         super(OrderForm, self).__init__(*args, **kwargs)
-        mychoice = Card.objects.filter(card_holder=membercards)
+        mychoice = Card.objects.filter(card_holder=membercards, is_verified=True)
         choice = []
         for i in mychoice:
             choice.append((i.card_number, i.card_number))

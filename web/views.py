@@ -162,7 +162,7 @@ def register(request):
                 messages.add_message(request, messages.ERROR, e)
             return redirect('/accounts/dashboard/')
         else:
-            messages.add_message(request, messages.ERROR, user_form.errors + ' ' + profile_form.errors)
+            messages.add_message(request, messages.ERROR, user_form.errors)
             redirect('/home/')
     else:
         user_form = UserForm()
