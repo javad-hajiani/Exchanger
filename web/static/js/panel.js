@@ -193,7 +193,7 @@ function setamount() {
     destionatio_currency = document.getElementsByName("destination_currency")[0].value;
     source_amount = document.getElementsByName("source_amount")[0].value;
     // alert(source_currency)
-    alert(destionatio_currency)
+    // alert(destionatio_currency)
     // alert(source_amount);
     let webaddress = document.location.origin;
     const Http = new XMLHttpRequest();
@@ -204,10 +204,10 @@ function setamount() {
         response = Http.responseText
         parsedresponse = JSON.parse(response)
         if (source_currency == 'USD') {
-            result = parsedresponse.USD * source_amount
+            result = source_amount / parsedresponse.USD
         }
         if (source_currency == 'IRR') {
-            result = parsedresponse.IRR * (parsedresponse.USD * source_amount)
+            result = source_amount / (parsedresponse.IRR * parsedresponse.USD)
         }
         document.getElementsByName("destination_amount")[0].value = result
     }
