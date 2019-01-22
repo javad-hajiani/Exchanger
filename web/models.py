@@ -6,7 +6,7 @@ sourcecurrency = [('USD', 'USD'), ('IRR', 'IRR'), ('BTC', 'BTC')]
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15, blank=True)
+    phone_number = models.CharField(max_length=25, blank=True)
 
     def __unicode__(self):
         return self.user.username
@@ -16,10 +16,10 @@ class UserProfile(models.Model):
 
 
 class Card(models.Model):
-    card_number = models.CharField(max_length=24)
+    card_number = models.CharField(max_length=80)
     card_holder = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date_exp = models.DateField()
-    cvv = models.CharField(max_length=10)
+    cvv = models.CharField(max_length=80)
     card_front = models.ImageField(upload_to='cards/')
     card_back = models.ImageField(upload_to='cards/')
     is_verified = models.BooleanField(default=False)
@@ -37,7 +37,7 @@ class Verification(models.Model):
     birth_date = models.DateField()
     address = models.TextField(max_length=500)
     passport_photo = models.ImageField(upload_to='passport_photo/')
-    is_verified = models.BooleanField(max_length=1, default=False)
+    is_verified = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.user
@@ -53,9 +53,9 @@ class Order(models.Model):
     destination_currency = models.CharField(max_length=10)
     order_date = models.DateTimeField(auto_now=True)
     destination_amount = models.IntegerField()
-    receipt_code = models.CharField(max_length=40)
-    blockchain_wallet = models.CharField(max_length=50)
-    card_number = models.CharField(max_length=50)
+    receipt_code = models.CharField(max_length=80)
+    blockchain_wallet = models.CharField(max_length=80)
+    card_number = models.CharField(max_length=80)
     status = [('Pending', 'Pending'), ('Success', 'Success')]
     transaction_status = models.CharField(default='Pending', max_length=10, choices=status)
 
