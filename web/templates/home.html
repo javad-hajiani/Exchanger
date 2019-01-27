@@ -1,25 +1,27 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% block content %}
-    {% for coin, value in coins.items %}
+    {% for coin in coins.data %}
+            {% if coin.rank|add:"0" <= 20 %}
     <tr>
         <td>
-            {{ coin }}
+            {{ coin.rank }}
         </td>
         <td>
-            {{ value.symbol }}
+            {{ coin.name }}
         </td>
         <td>
-            {{ value.price|intcomma }}(USD)
+            {{ coin.priceUsd|floatformat:"6"|intcomma }}(USD)
         </td>
         <td>
-          {% widthratio value.price 1 dollar as rialprice %}
+          {% widthratio coin.priceUsd 1 dollar as rialprice %}
             {% widthratio rialprice 1 10 as rialprice %}
             {{ rialprice|intcomma }}(IRR)
         </td>
         <td>
-            <a href="{{ value.url }}" target="_blank">Details </a>
+            <a href="{{ coin.url }}" target="_blank">Details </a>
         </td>
     </tr>
+        {% endif %}
  {% endfor %}
 {% endblock %}

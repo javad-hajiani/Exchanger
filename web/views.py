@@ -27,8 +27,9 @@ def coinsselector():
     response.append(('USD', 'USD'))
     response.append(('IRR', 'IRR'))
     coins = cached(getcoins)()
-    for i in coins:
-        response.append((coins[i]["symbol"], coins[i]["symbol"]))
+    for i in coins["data"]:
+        if int(i.rank) <= 20:
+            response.append((i["symbol"], i["symbol"]))
     return response
 
 
@@ -46,12 +47,10 @@ def home_page(request):
     return render(request, "home.html", context=response)
 
 
+
 def getcoins():
-    # coin = requests.get("https://chasing-coins.com/api/v1/top-coins/20").json()
-    # return coin
-    return {}
-
-
+    coin = requests.get("https://api.coincap.io/v2/assets").json()
+    return coin
 def getdollar():
     content = requests.get('https://bonbast.com').text
     soup = BeautifulSoup(content)
@@ -265,9 +264,10 @@ def verifyorder_page(request):
 
 def coinswithamount(request, coin):
     coins = cached(getcoins)()
-    for i in coins:
-        if coins[i]["symbol"] == coin:
-            return JsonResponse({'coin': coin, 'USD': coins[i]["price"], 'IRR': cached(getdollar)()})
+    for k in coins["data"]:
+        if int(k["rank"]) <= 20:
+            if k["symbol"] == coin:
+                return JsonResponse({'coin': coin, 'USD': k["priceUsd"], 'IRR': cached(getdollar)()})
     return HttpResponse("I Cant Found Your Coin")
 
 

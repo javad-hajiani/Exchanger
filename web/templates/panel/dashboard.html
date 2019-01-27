@@ -391,32 +391,31 @@
                         <th scope="col">Coin</th>
                         <th scope="col">Price(US)</th>
                         <th scope="col">Price(IRR)</th>
-                        <th scope="col">More Info</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    {% for coin, value in coins.items %}
-                        <tr>
-                            <td>
-                                {{ coin }}
-                            </td>
-                            <td>
-                                {{ value.symbol }}
-                            </td>
-                            <td>
-                                {{ value.price|intcomma }}(USD)
-                            </td>
-                            <td>
-                                {% widthratio value.price 1 dollar as rialprice %}
-                                {% widthratio rialprice 1 10 as rialprice %}
-                                {{ rialprice|intcomma }}(IRR)
-                            </td>
-                            <td>
-                                <a href="{{ value.url }}" target="_blank">Details </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                      {% for coin in coins.data %}
+            {% if coin.rank|add:"0" <= 20 %}
+    <tr>
+        <td>
+            {{ coin.rank }}
+        </td>
+        <td>
+            {{ coin.name }}
+        </td>
+        <td>
+            {{ coin.priceUsd|floatformat:"6"|intcomma }}(USD)
+        </td>
+        <td>
+          {% widthratio coin.priceUsd 1 dollar as rialprice %}
+            {% widthratio rialprice 1 10 as rialprice %}
+            {{ rialprice|intcomma }}(IRR)
+        </td>
+
+    </tr>
+        {% endif %}
+ {% endfor %}
 
 
                     </tbody>
