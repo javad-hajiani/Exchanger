@@ -71,7 +71,7 @@ class Order(models.Model):
 class Message(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(null=True, max_length=50)
-    referrer = models.CharField(choices=referrers, max_length=12)
+    referrer = models.CharField(choices=referrers, max_length=20)
     message = models.TextField(max_length=500)
 
     def __str__(self):
