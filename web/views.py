@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -40,7 +41,8 @@ def redirect_view(request):
 @csrf_exempt
 def home_page(request):
     messageform = MsgBoxForm()
-    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": "11500", "MsgForm": messageform}
+    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": cached(getdollar)(),
+                "MsgForm": messageform}
     return render(request, "home.html", context=response)
 
 
@@ -51,9 +53,10 @@ def getcoins():
 
 
 def getdollar():
-    dollar = requests.post('https://payment24.ir/api/product/currency-price-calculation?product=cards_buy',
-                           '{"product": "cards_buy"}').json()
-    return dollar["data"]["currencies"]["USD"]
+    content = requests.get('https://bonbast.com').text
+    soup = BeautifulSoup(content)
+    dollar = int(soup.find_all(id='usd1')[0].text)
+    return dollar
 
 
 @csrf_exempt
@@ -106,7 +109,8 @@ def dashboard_page(request):
     profile_form.fields['phone_number'].widget.attrs.update({"value": phone_number})
     ######################## End ################
     orders = Order.objects.filter(user=request.user)
-    response = {"title": "Dashboard", "coins": cached(getcoins)(), "dollar": "115000", "card_form": card_form,
+    response = {"title": "Dashboard", "coins": cached(getcoins)(), "dollar": cached(getdollar)(),
+                "card_form": card_form,
                 "Verification_Form": verification_form, "orders": orders, "Order_Form": order_form,
                 "ProfileForm": profile_form, "is_verified": verified}
     print(response)
@@ -261,10 +265,9 @@ def verifyorder_page(request):
 
 def coinswithamount(request, coin):
     coins = cached(getcoins)()
-    # dollar = cached(getdollar)()
     for i in coins:
         if coins[i]["symbol"] == coin:
-            return JsonResponse({'coin': coin, 'USD': coins[i]["price"], 'IRR': 115000})
+            return JsonResponse({'coin': coin, 'USD': coins[i]["price"], 'IRR': cached(getdollar)()})
     return HttpResponse("I Cant Found Your Coin")
 
 
