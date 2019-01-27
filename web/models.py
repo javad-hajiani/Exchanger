@@ -2,10 +2,11 @@ from django.contrib.auth.models import User
 from django.db import models
 
 sourcecurrency = [('USD', 'USD'), ('IRR', 'IRR'), ('BTC', 'BTC')]
-
+referrers = [('Friends', 'Friends'), ('Search Engine', 'Search Engine'), ('Advertisement', 'Advertisement'),
+             ('Other', 'Other')]
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     phone_number = models.CharField(max_length=25, blank=True)
 
     def __unicode__(self):
@@ -65,3 +66,13 @@ class Order(models.Model):
     def __str__(self):
         return "Order for {} from {} to {} is {}".format(self.user, self.source_currency, self.destination_currency,
                                                          self.transaction_status)
+
+
+class Message(models.Model):
+    name = models.CharField(max_length=50)
+    email = models.EmailField(null=True, max_length=50)
+    referrer = models.CharField(choices=referrers, max_length=12)
+    message = models.TextField(max_length=500)
+
+    def __str__(self):
+        return "{}  {}".format(self.name, self.email)

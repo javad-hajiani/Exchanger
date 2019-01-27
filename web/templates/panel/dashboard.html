@@ -328,13 +328,13 @@
             <h2>Setting panel</h2>
         </div>
         <div class="row">
-            <form action="#" method="post" enctype="multipart/form-data" class="contact-form">
+            <form action="/updateprofile/" method="post" enctype="multipart/form-data" class="contact-form">
                 <div class="row">
                     <div class="col span-1-of-3">
-                        <label for="passcode">Name</label>
+                        <label for="passcode">FirstName</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="passcode" id="Passcode" placeholder=" " required>
+                        {{ ProfileForm.first_name }}
                     </div>
                 </div>
                 <div class="row">
@@ -342,26 +342,24 @@
                         <label for="countryname">lastname</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                        {{ ProfileForm.last_name }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col span-1-of-3">
-                        <label for="countryname">new password</label>
+                        <label for="countryname">Phone</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
+                        {{ ProfileForm.phone_number }}
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col span-1-of-3">
-                        <label for="countryname">repid password</label>
                     </div>
                     <div class="col span-2-of-3">
-                        <input type="text" name="countryname" id="countryname" placeholder=" " required>
-                        <input style="margin-top: 35px" id="button1" type="submit" value="Change and save">
+                        <input style="margin-top: 35px" id="button1" type="submit" value="Save">
 
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from web.models import UserProfile, Card, Verification, Order
+from web.models import UserProfile, Card, Verification, Order, Message
 from web.models import sourcecurrency
 
 
@@ -57,3 +57,15 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ('source_currency', 'source_amount', 'destination_currency', 'destination_amount', 'receipt_code',
                   'blockchain_wallet', 'card_number')
+
+
+class ProfileForm(forms.Form):
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=60)
+    phone_number = forms.CharField(max_length=15)
+
+
+class MsgBoxForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ('name', 'email', 'referrer', 'message')

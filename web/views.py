@@ -2,14 +2,15 @@ import requests
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django_function_cache import cached
 
-from web.forms import UserForm, OrderForm
+from web.forms import UserForm, OrderForm, ProfileForm, MsgBoxForm
 from web.forms import UserProfileForm, cardForm, VerificationForm
-from web.models import Verification, Order
+from web.models import Verification, Order, UserProfile
 
 
 #
@@ -22,6 +23,8 @@ from web.models import Verification, Order
 
 def coinsselector():
     response = []
+    response.append(('USD', 'USD'))
+    response.append(('IRR', 'IRR'))
     coins = cached(getcoins)()
     for i in coins:
         response.append((coins[i]["symbol"], coins[i]["symbol"]))
@@ -36,13 +39,15 @@ def redirect_view(request):
 
 @csrf_exempt
 def home_page(request):
-    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": "11500"}
+    messageform = MsgBoxForm()
+    response = {"title": "Exchanger", "coins": cached(getcoins)(), "dollar": "11500", "MsgForm": messageform}
     return render(request, "home.html", context=response)
 
 
 def getcoins():
-    coin = requests.get("https://chasing-coins.com/api/v1/top-coins/20").json()
-    return coin
+    # coin = requests.get("https://chasing-coins.com/api/v1/top-coins/20").json()
+    # return coin
+    return {}
 
 
 def getdollar():
@@ -93,11 +98,17 @@ def dashboard_page(request):
     order_form.fields['source_amount'].widget.attrs.update({'onchange': 'setamount()'})
     order_form.fields['source_currency'].widget.attrs.update({'onchange': 'setamount()'})
     order_form.fields['destination_currency'].widget.attrs.update({'onchange': 'setamount()'})
+    ######################## ProfileUpdate ##########################
+    profile_form = ProfileForm()
+    profile_form.fields['first_name'].widget.attrs.update({"value": request.user.first_name})
+    profile_form.fields['last_name'].widget.attrs.update({"value": request.user.last_name})
+    phone_number = UserProfile.objects.filter(user=request.user).first().phone_number
+    profile_form.fields['phone_number'].widget.attrs.update({"value": phone_number})
     ######################## End ################
     orders = Order.objects.filter(user=request.user)
     response = {"title": "Dashboard", "coins": cached(getcoins)(), "dollar": "115000", "card_form": card_form,
                 "Verification_Form": verification_form, "orders": orders, "Order_Form": order_form,
-                "is_verified": verified}
+                "ProfileForm": profile_form, "is_verified": verified}
     print(response)
     return render(request, "panel/dashboard.html", context=response)
 
@@ -255,3 +266,48 @@ def coinswithamount(request, coin):
         if coins[i]["symbol"] == coin:
             return JsonResponse({'coin': coin, 'USD': coins[i]["price"], 'IRR': 115000})
     return HttpResponse("I Cant Found Your Coin")
+
+
+@csrf_exempt
+@login_required
+def updateprofile(request):
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST)
+        if profile_form.is_valid():
+            try:
+                userprofile_object = UserProfile.objects.get(user=request.user)
+                userprofile_object.phone_number = profile_form.cleaned_data['phone_number']
+                userprofile_object.save()
+                user_object = User.objects.get(pk=request.user.id)
+                user_object.first_name = profile_form.cleaned_data['first_name']
+                user_object.last_name = profile_form.cleaned_data['last_name']
+                user_object.save()
+                messages.add_message(request, messages.SUCCESS,
+                                     "Your Profile Updated Successfully")  # except IntegrityError as error:  # messages.add_message(request, messages.ERROR, error)
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, e)
+            return redirect("/accounts/dashboard/")
+        else:
+            messages.add_message(request, messages.ERROR, profile_form.errors)
+        return redirect("/accounts/dashboard/")
+    else:
+        messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')
+        return redirect("/accounts/dashboard/")
+
+
+@csrf_exempt
+def sendmessage(request):
+    if request.method == 'POST':
+        messageform = MsgBoxForm(request.POST)
+        if messageform.is_valid():
+            try:
+                messageform.save()
+            except Exception as e:
+                messages.add_message(request, messages.ERROR, e)
+            return redirect("/home/")
+        else:
+            messages.add_message(request, messages.ERROR, messageform.errors)
+        return redirect("/home/")
+    else:
+        messages.add_message(request, messages.ERROR, 'You Should USE POST METHOD IN REQUEST')
+        return redirect("/home/")

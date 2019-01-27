@@ -2,6 +2,7 @@ certifi==2018.11.29
 chardet==3.0.4
 Django==2.1.5
 django-function-cache==1.2
+django-grappelli==2.12.2
 django-redis==4.10.0
 idna==2.8
 Pillow==5.4.1

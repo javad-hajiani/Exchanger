@@ -197,7 +197,13 @@ function setamount() {
     // alert(source_amount);
     let webaddress = document.location.origin;
     const Http = new XMLHttpRequest();
-    let url = webaddress + '/coin/' + destionatio_currency;
+    let url;
+    if (destionatio_currency == 'USD' || destionatio_currency == 'IRR') {
+        url = webaddress + '/coin/' + source_currency;
+    } else {
+        url = webaddress + '/coin/' + destionatio_currency;
+    }
+
     Http.open("GET", url);
     Http.send()
     Http.onreadystatechange = (e) => {
@@ -205,9 +211,20 @@ function setamount() {
         parsedresponse = JSON.parse(response)
         if (source_currency == 'USD') {
             result = source_amount / parsedresponse.USD
-        }
-        if (source_currency == 'IRR') {
+        } else if (source_currency == 'IRR') {
             result = source_amount / (parsedresponse.IRR * parsedresponse.USD)
+        } else {
+            if (destionatio_currency == 'USD') {
+                result = source_amount * parsedresponse.USD
+            }
+            if (destionatio_currency == 'IRR') {
+                result = source_amount * (parsedresponse.USD * parsedresponse.IRR)
+            }
+        }
+        if (source_currency == 'USD' || source_currency == 'IRR') {
+            result = result + (result * 0.003)
+        } else {
+            result = result - (result * 0.003)
         }
         document.getElementsByName("destination_amount")[0].value = result
     }
