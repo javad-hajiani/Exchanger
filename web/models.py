@@ -50,10 +50,10 @@ class Verification(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     source_currency = models.CharField(max_length=10, choices=sourcecurrency)
-    source_amount = models.IntegerField()
+    source_amount = models.CharField(max_length=60)
     destination_currency = models.CharField(max_length=10)
     order_date = models.DateTimeField(auto_now=True)
-    destination_amount = models.IntegerField()
+    destination_amount = models.CharField(max_length=70)
     receipt_code = models.CharField(max_length=80)
     blockchain_wallet = models.CharField(max_length=80)
     card_number = models.CharField(max_length=80)

@@ -28,7 +28,7 @@ def coinsselector():
     response.append(('IRR', 'IRR'))
     coins = cached(getcoins)()
     for i in coins["data"]:
-        if int(i.rank) <= 20:
+        if int(i["rank"]) <= 20:
             response.append((i["symbol"], i["symbol"]))
     return response
 
