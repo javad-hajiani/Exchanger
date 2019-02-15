@@ -1,5 +1,8 @@
 FROM python:3
 ENV PYTHONUNBUFFERED 1
+ENV SMTP_HOST   "SMTP HOST ADDRESS"
+ENV SMTP_USER   "Your Username"
+ENV SMTP_PASS   "Your Password"
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
