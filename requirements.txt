@@ -6,7 +6,7 @@ django-function-cache==1.2
 django-grappelli==2.12.2
 django-redis==4.10.0
 idna==2.8
-Pillow==5.4.1
+Pillow==6.2.0
 pytz==2018.9
 redis==3.0.1
 requests==2.21.0
